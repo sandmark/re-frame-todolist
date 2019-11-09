@@ -5,8 +5,13 @@
             [clojure.string :as str]
             [re-frame-todolist.events :as events]))
 
-(defn todo-item [todo]
-  [:li (:title todo)])
+(defn todo-item [{:keys [id completed] :as todo}]
+  [:li
+   [:input.toggle {:type      "checkbox"
+                   :checked   (and completed "checked")
+                   :on-change #(re-frame/dispatch [::events/toggle id])}]
+   [:span {:class (when completed "completed")}
+    (:title todo)]])
 
 (defn todo-input []
   (let [!val (reagent/atom "")]

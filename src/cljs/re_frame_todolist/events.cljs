@@ -14,4 +14,9 @@
  ::add-todo
  (fn [db [_ title]]
    (let [id (allocate-next-id (:todos db))]
-     (assoc-in db [:todos id] {:id id :title title}))))
+     (assoc-in db [:todos id] {:id id :title title :completed false}))))
+
+(re-frame/reg-event-db
+ ::toggle
+ (fn [db [_ id]]
+   (update-in db [:todos id :completed] not)))
